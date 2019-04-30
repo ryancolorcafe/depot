@@ -5,6 +5,10 @@ class ProductsController < ApplicationController
   # GET /products.json
   def index
     @products = Product.all
+    respond_to do |format|
+      format.html
+      format.xml
+    end
   end
 
   # GET /products/1
@@ -76,7 +80,10 @@ class ProductsController < ApplicationController
     @latest_order = @product.orders.order(:updated_at).last
     if stale?(@latest_order)
       respond_to do |format|
+        format.html
+        format.xml
         format.atom
+        format.json { render json: @product.to_json(include: :orders) }
       end
     end
   end
